@@ -79,6 +79,17 @@ class Leaves(db.Model):
     total_leave_days = db.Column(db.Integer)
     reason = db.Column(db.Text)
 
+class Payslip(db.Model):
+    __tablename__ = 'Payslips'
+    payslip_id = db.Column(db.Integer, primary_key=True)
+    employee_id = db.Column(db.Integer, db.ForeignKey('Employee.employee_id'), nullable=False)
+    payroll_id = db.Column(db.Integer, db.ForeignKey('Payroll.payroll_id'), nullable=False)
+    payslip_pdf = db.Column(db.LargeBinary, nullable=False)  # Store PDF as binary data
+    generated_date = db.Column(db.Date, nullable=False)
+
+    employee = db.relationship('Employee', backref='payslips')
+    payroll = db.relationship('Payroll', backref='payslips')
+
     
 
 # Login route to authenticate users
@@ -256,6 +267,57 @@ def delete_employee(employee_id):
         db.session.rollback()
         print(f"Deletion error: {e}")
         return jsonify({"message": "Internal Server Error", "details": str(e)}), 500
+
+# API Endpoint to fetch payroll data with employee and payslip details
+@app.route('/api/payroll', methods=['GET'])
+def get_payroll_data():
+    payroll_data = (
+        db.session.query(
+            Payroll.employee_id,
+            Employee.first_name,
+            Employee.last_name,
+            Employee.role,
+            Employee.department,
+            Payroll.net_salary,
+            Payroll.pay_date,
+            Payroll.payslip_generated,
+            Payslip.payslip_pdf
+        )
+        .join(Employee, Employee.employee_id == Payroll.employee_id)
+        .outerjoin(Payslip, Payroll.payroll_id == Payslip.payroll_id)
+        .all()
+    )
+    
+    payroll_list = [
+        {
+            "employee_id": record.employee_id,
+            "employee_name": f"{record.first_name} {record.last_name}",
+            "role": record.role,
+            "department": record.department,
+            "net_salary": float(record.net_salary),
+            "pay_date": record.pay_date.isoformat(),
+            "payslip_generated": record.payslip_generated,
+            "payslip_pdf": f"/api/payslip/{record.payslip_pdf}" if record.payslip_pdf else None
+        }
+        for record in payroll_data
+    ]
+
+    return jsonify(payroll_list), 200
+
+# Serve Payslip PDF by ID
+@app.route('/api/payslip/<int:payslip_id>', methods=['GET'])
+def download_payslip(payslip_id):
+    payslip = Payslip.query.get(payslip_id)
+    if payslip:
+        response = app.response_class(
+            response=payslip.payslip_pdf,
+            status=200,
+            mimetype='application/pdf'
+        )
+        response.headers["Content-Disposition"] = f"attachment; filename=payslip_{payslip_id}.pdf"
+        return response
+    else:
+        return jsonify({"message": "Payslip not found"}), 404
 
 
 # Run the app

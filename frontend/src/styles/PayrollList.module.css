@@ -1,0 +1,30 @@
+/* src/styles/PayrollList.module.css */
+.payrollList {
+    padding: 20px;
+  }
+  
+  .payrollTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .payrollTable th,
+  .payrollTable td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  
+  .payrollTable th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+  
+  .payrollTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .payrollTable tr:hover {
+    background-color: #f1f1f1;
+  }
+  
