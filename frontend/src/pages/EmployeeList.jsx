@@ -20,14 +20,16 @@ const EmployeeList = () => {
   }, []);
 
   // Delete an employee by ID
+  // src/pages/EmployeeList.jsx
   const handleDeleteEmployee = async (employee_id) => {
     try {
-      await axios.delete('http://localhost:5000/api/employees/${employee_id}');
+      await axios.delete(`http://localhost:5000/api/employees/${employee_id}`);  // Use backticks for template string
       setEmployees(employees.filter(emp => emp.employee_id !== employee_id));
     } catch (error) {
       console.error("Error deleting employee:", error);
     }
   };
+
 
   const toggleForm = () => {
     setShowForm(!showForm);

@@ -96,5 +96,5 @@ CREATE TABLE Leaves (
 );
 
 show tables;
--- drop table Tax_Bracket, Employee, Users, Payroll, Payslips, Leaves;
+drop table Tax_Bracket, Employee, Users, Payroll, Payslips, Leaves;
 

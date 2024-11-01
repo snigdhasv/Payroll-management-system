@@ -24,6 +24,14 @@ class User(db.Model):
     employee_id = db.Column(db.Integer)
     role = db.Column(db.String(20), nullable=False)
     
+class TaxBracket(db.Model):
+    __tablename__ = 'Tax_Bracket'
+    tax_bracket_id = db.Column(db.Integer, primary_key=True)
+    min_salary = db.Column(db.Numeric(15, 2), nullable=False)
+    max_salary = db.Column(db.Numeric(15, 2), nullable=False)
+    tax_rate = db.Column(db.Numeric(5, 2), nullable=False)
+
+    
 # Define the Employee model corresponding to the Employee table
 class Employee(db.Model):
     __tablename__ = 'Employee'
@@ -223,14 +231,31 @@ def add_employee():
 # API Endpoint to delete an employee by ID
 @app.route('/api/employees/<int:employee_id>', methods=['DELETE'])
 def delete_employee(employee_id):
-    employee = Employee.query.get(employee_id)
-    if employee:
+    try:
+        employee = Employee.query.get(employee_id)
+        if not employee:
+            return jsonify({"message": "Employee not found"}), 404
+        
+        # Log to check if the employee exists
+        print(f"Attempting to delete employee: {employee}")
+
+        # Delete associated payroll records
+        Payroll.query.filter_by(employee_id=employee_id).delete()
+        
+        # Log to confirm payroll deletion
+        print(f"Deleted payroll records for employee ID: {employee_id}")
+
+        # Delete the employee
         db.session.delete(employee)
         db.session.commit()
+        
+        print("Employee deletion successful")
         return jsonify({"message": "Employee deleted successfully"}), 200
-    else:
-        return jsonify({"message": "Employee not found"}), 404
-
+    
+    except Exception as e:
+        db.session.rollback()
+        print(f"Deletion error: {e}")
+        return jsonify({"message": "Internal Server Error", "details": str(e)}), 500
 
 
 # Run the app
