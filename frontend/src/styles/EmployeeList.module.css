@@ -1,0 +1,165 @@
+/* EmployeeList.module.css */
+
+.employeeList {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 24px;
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.employeeTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.employeeTable th, .employeeTable td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.employeeTable th {
+  background-color: #4CAF50;
+  color: white;
+  font-weight: bold;
+}
+
+.employeeTable tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.employeeTable tr:hover {
+  background-color: #ddd;
+}
+
+.employeeTable td {
+  color: #333;
+}
+
+.employeeTable td, .employeeTable th {
+  text-align: center;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.addButton, .removeButton {
+  padding: 10px 20px;
+  margin-left: 10px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+}
+
+.addButton {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.removeButton {
+  background-color: #f44336;
+  color: white;
+}
+
+.addButton:hover, .removeButton:hover {
+  opacity: 0.9;
+}
+
+/* Form Container */
+.formContainer {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #f4f4f9;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formContainer h3 {
+  font-size: 20px;
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Form Styling */
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.formGroup input, .formGroup select {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  outline: none;
+  background-color: #fff;
+}
+
+.formGroup input:focus, .formGroup select:focus {
+  border-color: #4CAF50;
+}
+
+/* Button Styling */
+.formButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.submitButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #4CAF50;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submitButton:hover {
+  background-color: #45a049;
+}
+
+.cancelButton {
+  padding: 10px 20px;
+  font-size: 16px;
+  color: #333;
+  background-color: #ccc;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: background-color 0.3s;
+}
+
+.cancelButton:hover {
+  background-color: #b3b3b3;
+}
